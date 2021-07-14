@@ -37,4 +37,13 @@ const UsuarioSchema = Schema({
 
 });
 
+//DEBE SER UNA FUNCION NORMAL, NECESITAMOS EL THIS
+
+UsuarioSchema.methods.toJSON = function(){
+    //GENERAMOS LA INSTANCIA CON LOS OBJETOS QUE TENEMOS
+    const { __v, password, ...usuario } = this.toObject();
+    return usuario;
+}
+
+
 module.exports = model('Usuario', UsuarioSchema);
