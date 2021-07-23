@@ -37,11 +37,13 @@ const UsuarioSchema = Schema({
 
 });
 
+//EXTRAER RESPUESTAS DEL RETURN
 //DEBE SER UNA FUNCION NORMAL, NECESITAMOS EL THIS
-
 UsuarioSchema.methods.toJSON = function(){
     //GENERAMOS LA INSTANCIA CON LOS OBJETOS QUE TENEMOS
-    const { __v, password, ...usuario } = this.toObject();
+    const { __v, password, _id ,...usuario } = this.toObject();
+    //CAMBIAR VISUALMENTE UN CAMPO EN MONGOOSE
+    usuario.uid = _id;
     return usuario;
 }
 

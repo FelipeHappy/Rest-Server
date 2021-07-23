@@ -89,13 +89,20 @@ const deleteUsuario = async(req, res = response) => {
     //Eliminarlo Fisicamente
     // const usuario = await Usuario.findByIdAndDelete(id);
 
+    //Luego de validar el token, lo citamos en el controlador
+    // const uid = req.uid;
+
     //Cambiar el estado del usuario
     const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+
+    // //Imprimir usuario autenticado
+    // const usuarioAutenticado = req.usuario;
 
     res.json({
         ok: true,
         msg:'delete API-Controlador',
-        usuario
+        usuario,
+        
     })
 }
 
