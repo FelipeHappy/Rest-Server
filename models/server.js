@@ -9,8 +9,22 @@ class Server {
     constructor(){
        this.app = express(); 
        this.port = process.env.PORT;
-       this.usersPath = '/api/users';
-       this.authPath = '/api/auth';
+
+    // --------- Funciona pero se puede optimizar -------
+    //    this.usersPath = '/api/users';
+    //    this.authPath = '/api/auth';
+    //    this.categoriaPath = '/api/categorias';
+    // --------------------------------------------------
+
+    //-----------Optimizacion (Alfabeticamente opcional)----------------
+    this.paths = {
+        auth: '/api/auth',
+        categorias: '/api/categorias',
+        usuarios: '/api/users',
+        productos:'/api/productos',
+        buscar:'/api/buscar'
+    }
+    
 
        //Conectar a la BD
        this.connectBD();
@@ -41,8 +55,14 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.usersPath, require('../routes/user.routes')),
-        this.app.use(this.authPath, require('../routes/auth.routes'))
+        this.app.use(this.paths.usuarios, require('../routes/user.routes')),
+        this.app.use(this.paths.auth, require('../routes/auth.routes')),
+        this.app.use(this.paths.categorias, require('../routes/categorias.routes')),
+        this.app.use(this.paths.productos, require('../routes/productos.routes'))
+        this.app.use(this.paths.buscar, require('../routes/buscar.routes'))
+
+
+
     }
 
     listen(){    
