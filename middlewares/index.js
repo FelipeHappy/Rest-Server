@@ -4,6 +4,7 @@
 const validaCampos = require('../middlewares/validar-campos');
 const validaJWT = require('../middlewares/validar-jwt');
 const validaROL = require('../middlewares/validar-rol');
+const validarArchivoUpload = require('../middlewares/validar-archivo')
 
 
 module.exports = {

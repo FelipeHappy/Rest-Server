@@ -46,11 +46,24 @@ const validRol = async(rol = '') => {
         throw new Error(`El id ${id} del producto no está registrado en la BD`)
     }
  }
+
+ //Verificar Colecciones
+const colleccionesPermitidas = (colleccion = '', collecciones = []) => {
+    
+    //Variable para almacenar la colleccion ingresadas con las permitidas en el arreglo
+    const incluye = collecciones.includes(colleccion);
+    if(!incluye){
+        throw new Error(`La coleccion ${colleccion} no está dentro de las colecciones permitidas - ${collecciones}`)
+    }
+    return true;
+
+}
  
 module.exports = {
     validRol,
     validEmail,
     validUser,
     validCategory,
-    validProduct
+    validProduct,
+    colleccionesPermitidas
 }
