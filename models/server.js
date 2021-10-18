@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors');
 const { json } = require('express');
 const { dbConnection } = require('../db/config');
+const fileUpload = require('express-fileupload');
 
 
 class Server {
@@ -9,8 +10,23 @@ class Server {
     constructor(){
        this.app = express(); 
        this.port = process.env.PORT;
-       this.usersPath = '/api/users';
-       this.authPath = '/api/auth';
+
+    // --------- Funciona pero se puede optimizar -------
+    //    this.usersPath = '/api/users';
+    //    this.authPath = '/api/auth';
+    //    this.categoriaPath = '/api/categorias';
+    // --------------------------------------------------
+
+    //-----------Optimizacion (Alfabeticamente opcional)----------------
+    this.paths = {
+        auth: '/api/auth',
+        categorias: '/api/categorias',
+        usuarios: '/api/users',
+        productos:'/api/productos',
+        buscar:'/api/buscar',
+        uploads: '/api/uploads'
+    }
+    
 
        //Conectar a la BD
        this.connectBD();
@@ -38,11 +54,27 @@ class Server {
         
         //Directorio Publico
         this.app.use(express.static('public'))
+
+        //Carga de archivos (General)
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            //Crear un directorio por defecto al momento de cargar un archivo a una ruta previamente definida en el helper
+            createParentPath: true
+        }));
     }
 
     routes() {
-        this.app.use(this.usersPath, require('../routes/user.routes')),
-        this.app.use(this.authPath, require('../routes/auth.routes'))
+        this.app.use(this.paths.usuarios, require('../routes/user.routes')),
+        this.app.use(this.paths.auth, require('../routes/auth.routes')),
+        this.app.use(this.paths.categorias, require('../routes/categorias.routes')),
+        this.app.use(this.paths.productos, require('../routes/productos.routes'))
+        this.app.use(this.paths.buscar, require('../routes/buscar.routes')),
+        this.app.use(this.paths.uploads, require('../routes/uploads.routes'))
+
+
+
+
     }
 
     listen(){    

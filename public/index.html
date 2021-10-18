@@ -20,15 +20,22 @@
     <script>
         //Inicio proceso FETCH API
         //Revisamos el host(localhost)
-        console.log(window.location.hostname.includes('localhost'));
+        console.log(window.location);
 
-        //Variable url
-        var url = (window.location.hostname.includes('localhost') 
-                    ?  'http://localhost:8080/api/auth/google' : 
-                    'https://restserver-node-practice.herokuapp.com/');
+//         //Variable url
+// <<<<<<< HEAD
+//         var url = (window.location.hostname.includes('localhost') 
+//                     ?  'http://localhost:8080/api/auth/google' : 
+//                     'https://restserver-node-practice.herokuapp.com/');
+// =======
+        var url = (window.location.hostname.includes('localhost'))
+                    ? 'http://localhost:8080/api/auth/google'
+                    : 'https://restserver-node-practice.herokuapp.com/api/auth/google';
+// >>>>>>> uploadprotect
 
         //FUNCION INICIAR SESION
         function onSignIn(googleUser) {
+            
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
             console.log('Name: ' + profile.getName());
@@ -38,7 +45,23 @@
             //Autenicacion con servidor backend
             var id_token = googleUser.getAuthResponse().id_token;
             console.log(id_token);
-            }
+
+            //El body debe tener el id_token en el formato establecido
+            const data = {id_token};
+
+            //Disparar la peticion fetch(promesa)
+            fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify( data )
+            })
+            .then(resp => resp.json())
+            .then(data => console.log('Nuestro server', data))
+            .catch(console.log)
+
+         }
+
+
         //FUNCION CERRAR SESION
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();
